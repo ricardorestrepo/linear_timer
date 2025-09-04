@@ -146,7 +146,135 @@
         </div>
     </div>
 
-    <!-- Link to the external JavaScript file -->
-    <script src="./script.js"></script>
+    <script>
+        // DOM element references
+        const targetTimeInput = document.getElementById('target-time');
+        const initialValueInput = document.getElementById('initial-value');
+        const endValueInput = document.getElementById('end-value');
+        const timeRemainingDisplay = document.getElementById('time-remaining');
+        const currentValueDisplay = document.getElementById('current-value');
+        const startBtn = document.getElementById('start-btn');
+        const stopBtn = document.getElementById('stop-btn');
+        const resetBtn = document.getElementById('reset-btn');
+        const messageContainer = document.getElementById('message-container');
+
+        // State variables
+        let timerInterval;
+        let isRunning = false;
+        let startTime = 0;
+        let targetTimeSeconds = 0;
+        let initialValue = 0;
+        let endValue = 0;
+
+        /**
+         * Displays a temporary message box to the user.
+         * @param {string} message The message to display.
+         */
+        const showMessageBox = (message) => {
+            const messageBox = document.createElement('div');
+            messageBox.className = 'message-box';
+            messageBox.textContent = message;
+            messageContainer.appendChild(messageBox);
+            setTimeout(() => {
+                messageBox.remove();
+            }, 3000);
+        };
+
+        /**
+         * Updates the timer display.
+         */
+        const updateDisplay = () => {
+            const elapsedMilliseconds = Date.now() - startTime;
+            const remainingMilliseconds = Math.max(0, (targetTimeSeconds * 1000) - elapsedMilliseconds);
+            const remainingMinutes = Math.floor(remainingMilliseconds / 60000);
+            const remainingSeconds = Math.floor((remainingMilliseconds % 60000) / 1000);
+
+            const progress = 1 - (remainingMilliseconds / (targetTimeSeconds * 1000));
+            const currentValue = initialValue + progress * (endValue - initialValue);
+
+            // Format time display
+            const formattedMinutes = String(remainingMinutes).padStart(2, '0');
+            const formattedSeconds = String(remainingSeconds).padStart(2, '0');
+            timeRemainingDisplay.textContent = `${formattedMinutes}:${formattedSeconds}`;
+
+            // Format value display, rounding to 2 decimal places
+            currentValueDisplay.textContent = currentValue.toFixed(2);
+
+            if (remainingMilliseconds <= 0) {
+                stopTimer();
+                showMessageBox("Timer completed!");
+                currentValueDisplay.textContent = endValue.toFixed(2);
+                timeRemainingDisplay.textContent = "00:00";
+            }
+        };
+
+        /**
+         * Starts the timer.
+         */
+        const startTimer = () => {
+            if (isRunning) return;
+
+            const timeInput = parseFloat(targetTimeInput.value);
+            const initialVal = parseFloat(initialValueInput.value);
+            const endVal = parseFloat(endValueInput.value);
+
+            if (isNaN(timeInput) || isNaN(initialVal) || isNaN(endVal) || timeInput <= 0) {
+                showMessageBox("Please enter valid positive numbers for all fields.");
+                return;
+            }
+
+            // Set state variables from user input
+            targetTimeSeconds = timeInput * 60; // Convert minutes to seconds
+            initialValue = initialVal;
+            endValue = endVal;
+            startTime = Date.now();
+            isRunning = true;
+
+            // Update button states
+            startBtn.disabled = true;
+            stopBtn.disabled = false;
+            resetBtn.disabled = false;
+
+            // Start the interval to update the display
+            timerInterval = setInterval(updateDisplay, 100);
+        };
+
+        /**
+         * Stops the timer.
+         */
+        const stopTimer = () => {
+            if (!isRunning) return;
+            clearInterval(timerInterval);
+            isRunning = false;
+
+            // Update button states
+            startBtn.disabled = false;
+            stopBtn.disabled = true;
+        };
+
+        /**
+         * Resets the timer to its initial state.
+         */
+        const resetTimer = () => {
+            stopTimer();
+
+            // Clear inputs and displays
+            targetTimeInput.value = '';
+            initialValueInput.value = '';
+            endValueInput.value = '';
+            timeRemainingDisplay.textContent = '00:00';
+            currentValueDisplay.textContent = '0';
+
+            // Reset button states
+            startBtn.disabled = false;
+            stopBtn.disabled = true;
+        };
+
+        // Add event listeners to the buttons
+        startBtn.addEventListener('click', startTimer);
+        stopBtn.addEventListener('click', stopTimer);
+        resetBtn.addEventListener('click', resetTimer);
+
+    </script>
 </body>
 </html>
