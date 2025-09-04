@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linear Function Timer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #1a202c;
+            color: #e2e8f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 1rem;
+        }
+
+        .container {
+            max-width: 28rem;
+            width: 100%;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .input-label {
+            font-weight: 700;
+        }
+
+        .input-field {
+            background-color: #2d3748;
+            border: 1px solid #4a5568;
+            color: #e2e8f0;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            outline: none;
+            transition: border-color 0.2s ease-in-out;
+        }
+
+        .input-field:focus {
+            border-color: #4299e1;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            font-weight: bold;
+            border-radius: 0.5rem;
+            transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            cursor: pointer;
+        }
+
+        .btn-green {
+            background-color: #48bb78;
+            color: white;
+        }
+
+        .btn-green:hover {
+            background-color: #38a169;
+            transform: translateY(-2px);
+        }
+
+        .btn-red {
+            background-color: #f56565;
+            color: white;
+        }
+
+        .btn-red:hover {
+            background-color: #e53e3e;
+            transform: translateY(-2px);
+        }
+
+        .btn-gray {
+            background-color: #a0aec0;
+            color: #2d3748;
+        }
+
+        .btn-gray:hover {
+            background-color: #718096;
+            transform: translateY(-2px);
+        }
+
+        .message-box {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #2d3748;
+            border: 1px solid #4a5568;
+            color: #e2e8f0;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            z-index: 1000;
+            max-width: 90%;
+            text-align: center;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-200">
+
+    <div class="container bg-gray-800 p-8 rounded-xl shadow-lg">
+        <h1 class="text-3xl font-bold text-center mb-6">Linear Function Timer</h1>
+
+        <div id="message-container"></div>
+
+        <div class="space-y-4">
+            <div class="input-group">
+                <label for="target-time" class="input-label">Target Time (minutes)</label>
+                <input type="number" id="target-time" class="input-field" placeholder="e.g., 50">
+            </div>
+
+            <div class="input-group">
+                <label for="initial-value" class="input-label">Initial Value</label>
+                <input type="number" id="initial-value" class="input-field" placeholder="e.g., 0">
+            </div>
+
+            <div class="input-group">
+                <label for="end-value" class="input-label">End Value</label>
+                <input type="number" id="end-value" class="input-field" placeholder="e.g., 100">
+            </div>
+        </div>
+
+        <div class="mt-8 text-center">
+            <div class="text-gray-400">Time Remaining:</div>
+            <div id="time-remaining" class="text-4xl font-mono mt-1">00:00</div>
+        </div>
+
+        <div class="mt-4 text-center">
+            <div class="text-gray-400">Current Value:</div>
+            <div id="current-value" class="text-5xl font-bold mt-1">0</div>
+        </div>
+
+        <div class="flex justify-center space-x-4 mt-8">
+            <button id="start-btn" class="btn btn-green">Start</button>
+            <button id="stop-btn" class="btn btn-red" disabled>Stop</button>
+            <button id="reset-btn" class="btn btn-gray">Reset</button>
+        </div>
+    </div>
+
+    <!-- Link to the external JavaScript file -->
+    <script src="./script.js"></script>
+</body>
+</html>
